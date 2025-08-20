@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brain Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<img src="/static/images/bg9.png" width="600" hight="700" >
+
+<style>
+body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+button {
+    font-family: Arial, sans-serif; /* Font style */
+    font-size: 18px;                /* Font size */
+    padding: 10px 20px;             /* Space inside button */
+    border: none;                   /* Remove border */
+    border-radius: 8px;             /* Rounded corners */
+    background-color: transperent;         /* Green background */
+    color: black;                   /* White text */
+    cursor: pointer;                /* Pointer on hover */
+}
+
+
+#answerBox {
+    position: absolute;
+    top: 98%;   /* distance from top of image */
+    left: 48%;  /* distance from left of image */
+}
+
+
+#S{
+    position: absolute;
+    top: 96%;   /* distance from top of image */
+    left: 57%;  /* distance from left of image */
+}
+
+</style>
+<body>
+
+<input type="hidden" id="question" value="My friend is single. He has two brothers, both of whom are married and have at least one child. My friend is the uncle of four children. What is the minimum number of plates that need to be arranged for dinner ?">
+
+<input type="number" min="0" max="20" id="answerBox" placeholder="Type your answer">
+<button id="S" onclick="submitAnswer()">✅</button>
+
+<script>
+function submitAnswer() {
+    const question = document.getElementById("question").value;
+    const answer = document.getElementById("answerBox").value;
+
+    fetch("/button-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: question, answer: answer })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.correct) {
+            window.location.href = "/q10";  // go to next page
+        } else {
+            alert("❌ Wrong Answer! Hint: " + data.hint);
+        }
+    })
+    .catch(err => console.error("Error:", err));
+}
+</script>
+
+</body>
+</html>

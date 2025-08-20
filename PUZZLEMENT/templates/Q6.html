@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Brain Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<img src="/static/images/bg6.png" width="600" hight="700" >
+
+<style>
+body {
+            font-family: Arial, sans-serif;
+            padding: 12px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+button {
+    font-family: Arial, sans-serif; /* Font style */
+    font-size: 20px;                /* Font size */
+               /* Space inside button */
+    border: none;                   /* Remove border */
+    border-radius: 5px;             /* Rounded corners */
+    background-color: transperent;         /* Green background */
+    color: black;                   /* White text */
+    cursor: pointer;                /* Pointer on hover */
+}
+
+
+#bee{
+    position: absolute;
+    top: 23%;   /* distance from top of image */
+    left: 47.2%;  /* distance from left of image */
+}
+
+#Madagascar{
+    position: absolute;
+    top: 42%;   /* distance from top of image */
+    left: 40%;  /* distance from left of image */
+}
+
+#America{
+    position: absolute;
+    top: 60%;   /* distance from top of image */
+    left: 63%;  /* distance from left of image */
+}
+
+#India{
+    position: absolute;
+    top: 78%;   /* distance from top of image */
+    left: 44%;  /* distance from left of image */
+}
+
+#China{
+    position: absolute;
+    top: 96%;   /* distance from top of image */
+    left: 63%;  /* distance from left of image */
+}
+
+</style>
+<body>
+
+<input type="hidden" id="question" value="Where dose bee honey came from ?">
+
+<button id="bee" type="button" onclick="Q6('bee')">
+    bee
+</button>
+<button id="Madagascar" type="button" onclick="Q6('Madagascar')">
+   Madagascar
+</button>
+<button id="America" type="button" onclick="Q6('America')">
+    America
+</button>
+<button id="India" type="button" onclick="Q6('India')">
+    India
+</button>
+<button id="China" type="button" onclick="Q6('China')">
+    China
+</button>
+
+<script>
+function Q6(country) {
+    let question = "Where dose bee honey came from ?";  // must match qa_data key
+
+    fetch("/button-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: question, answer: country })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.correct) {
+            window.location.href = "/q7"; // move to next page
+        } else {
+            alert("❌ Wrong Answer! Hint: " + data.hint);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+</script>
+
+</body>
+</html>
